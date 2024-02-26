@@ -38,8 +38,8 @@ function retval = classify(sample, dataset)
     return
 endfunction
 
-% Main function for evaluating the dummy classifier
-function evaluate()
+% Main function for evaluating the dummy classifier (wrong assumptions)
+function evaluate_random_sample()
     global versicolor
     global virginica
 
@@ -49,12 +49,12 @@ function evaluate()
     % Save the orig size and correct guesses, to further calculate the Acc.
     % The orig_size is decremented by 1, because the last step of the while loop
     % would consist of dataset with the size of 0. Therefore the following condition, i > 1 (instead of 0)
-    orig_size = size (dataset)(1) - 1
+    orig_size = size (dataset)(1)
     correct = 0
 
     % Start from the combined, full dataset
     i = size (dataset)(1)
-    while (i > 1)
+    while (i >= 1)
         % Sample the data
         sample_idx = randi(size(dataset, 1),1)
         sample = dataset(sample_idx, :)
@@ -72,6 +72,43 @@ function evaluate()
         endif
 
         i = i - 1
+    endwhile
+
+    printf("=====================================\n")
+    printf("Accuracy: %f\n", correct / orig_size)
+    printf("=====================================\n")
+endfunction
+
+% Main function for evaluating the dummy classifier
+function evaluate()
+    global versicolor
+    global virginica
+
+    % Combine the datasets
+    dataset = [versicolor; virginica]
+
+    % Save the orig size and correct guesses, to further calculate the Acc.
+    orig_size = size (dataset)(1)
+    correct = 0
+
+    i = 1
+    while (i <= orig_size)
+        % Sample the data
+        sample = dataset(i, :)
+
+        % Remove the selected sample from the dataset
+        train_dataset = [dataset(1:i-1, :); dataset(i+1:end, :)]
+
+        % Make prediction
+        prediction = classify(sample(:, 1:end-1), train_dataset)
+        label = sample(:, end)
+
+        % If our guess was correct -> Add the correct counter
+        if (prediction == label)
+            correct = correct + 1
+        endif
+
+        i = i + 1
     endwhile
 
     printf("=====================================\n")
