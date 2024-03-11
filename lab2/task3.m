@@ -21,19 +21,21 @@ rep_cnt = 5; % at least
 % YOUR CODE GOES HERE 
 %
 
-errors = zeros(columns(parts), 3, rep_cnt);
-for partition_id = 1:columns(parts)
-    partition = parts(partition_id)
+for partition = parts
+    errors = zeros(3, rep_cnt);
     for rep = 1:rep_cnt
         reduced_train = reduce(train, partition * ones(1, 8));
         pdfindep_para = para_indep(reduced_train);
         pdfmulti_para = para_multi(reduced_train);
         pdfparzen_para = para_parzen(reduced_train, 0.001);
 
-        errors(partition_id, 1, rep) = mean(bayescls(test(:,2:end), @pdf_indep, pdfindep_para) != test(:,1));
-        errors(partition_id, 2, rep) = mean(bayescls(test(:,2:end), @pdf_multi, pdfmulti_para) != test(:,1));
-        errors(partition_id, 3, rep) = mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para) != test(:,1));
+        errors(1, rep) = mean(bayescls(test(:,2:end), @pdf_indep, pdfindep_para) != test(:,1));
+        errors(2, rep) = mean(bayescls(test(:,2:end), @pdf_multi, pdfmulti_para) != test(:,1));
+        errors(3, rep) = mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para) != test(:,1));
     end
+    printf("Error stats for %f partition:\n", partition)
+    mean(errors)
+    std(errors)
 end
 
 errors
