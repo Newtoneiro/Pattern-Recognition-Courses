@@ -1,3 +1,4 @@
+% POINT 2
 % Selecting features
 plot2features(train, 2, 4) % - Clear clusters visible
 

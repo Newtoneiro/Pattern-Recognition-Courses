@@ -1,3 +1,4 @@
+% POINT 3
 % Test reduce func
 
 rdlab = unique(pdf_test(:,1));
@@ -15,13 +16,17 @@ reduced = reduce(pdf_test, [0.8 0.4]);
 % In the report, please provide only the mean value and the standard deviation 
 % of the error coefficient
 
-parts = [0.1 0.25 0.5];
+parts = [0.1, 0.25, 0.5];
 rep_cnt = 5; % at least
 
 % YOUR CODE GOES HERE 
 %
 
-for partition = parts
+mean_errors = zeros(length(parts), 3);
+std_errors = zeros(length(parts), 3);
+
+for partition_id = 1:columns(parts)
+    partition = parts(partition_id)
     errors = zeros(3, rep_cnt);
     for rep = 1:rep_cnt
         reduced_train = reduce(train, partition * ones(1, 8));
@@ -33,12 +38,16 @@ for partition = parts
         errors(2, rep) = mean(bayescls(test(:,2:end), @pdf_multi, pdfmulti_para) != test(:,1));
         errors(3, rep) = mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para) != test(:,1));
     end
-    printf("Error stats for %f partition:\n", partition)
-    mean(errors)
-    std(errors)
+    mean_errors(partition_id, :) = mean(errors, 2);
+    std_errors(partition_id, :) = std(errors');
 end
 
-errors
+% Display overall results
+printf("\nOverall Mean Errors:\n");
+disp(mean_errors);
+
+printf("\nOverall Standard Deviations:\n");
+disp(std_errors);
 
 % note that for given experiment you should reduce all classes in the training
 % set with the same reduction coefficient; assuming that class_count is the 

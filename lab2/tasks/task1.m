@@ -1,3 +1,4 @@
+% POINT 1
 [train test] = load_cardsuits_data();
 
 % Our first look at the data

@@ -22,10 +22,10 @@ function pdf = pdf_indep(pts, para)
 		% for each feature
 		for fid = 1:columns(para.mu)
 			% fill proper column in onedpdfs matrix
-			onedpdfs(:, fid) = normpdf(pts(:, fid), para.mu(clid, fid), para.sig(clid, fid))
+			onedpdfs(:, fid) = normpdf(pts(:, fid), para.mu(clid, fid), para.sig(clid, fid));
 		% aggregate onedpdfs into one column of pdf matrix
 		end
 		% The features are independent thus pdf(x, y) = pdf(x) * pdf(y)
-		pdf(:, clid) = prod(onedpdfs, 2)
+		pdf(:, clid) = prod(onedpdfs, 2);
 	end
 end
