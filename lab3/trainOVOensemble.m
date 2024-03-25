@@ -1,4 +1,4 @@
-function ovosp = trainOVOensemble(tset, tlab, htrain)
+function [errors, ovosp] = trainOVOensemble(tset, tlab, htrain)
 % Trains a set of linear classifiers (one versus one class)
 % on the training set using trainSelect function
 % tset - training set samples
@@ -15,6 +15,7 @@ function ovosp = trainOVOensemble(tset, tlab, htrain)
   % that's exactly what we need for ovo classifier
   pairs = nchoosek(labels, 2);
   ovosp = zeros(rows(pairs), 2 + 1 + columns(tset));
+  errors = zeros(rows(pairs),1);
   
   for i=1:rows(pairs)
 	% store labels in the first two columns
@@ -30,9 +31,13 @@ function ovosp = trainOVOensemble(tset, tlab, htrain)
 	% what to do with errors?
 	% it would be wise to add additional output argument
 	% to return error coefficients
+
+    errors(i)=(misp+misn)/(rows(posSamples)+rows(negSamples)) ;
 	
     % store the separating plane coefficients (this is our classifier)
 	% in ovo matrix
     ovosp(i, 3:end) = sp; 
   end
+  output_precision(10)
+  errors=[ovosp(:,1:2) errors ]
 end
