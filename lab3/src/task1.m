@@ -4,6 +4,11 @@
 % containing just two classes - perceptron. The easiest way to accomplish it is to use 
 % two-dimensional data sets , which can be visualized together with the separating plane
 
+tenzeros = tvec(tlab == 1, 1:2)(1:10, :);
+tenones = tvec(tlab == 2, 1:2)(1:10, :);
+pclass = tenzeros;
+nclass = tenones;
+
 % Call the perceptron function to get the separating plane
 [sepplane, mispos, misneg] = perceptron(pclass, nclass);
 

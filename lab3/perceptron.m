@@ -46,11 +46,7 @@ function [sepplane mispos misneg] = perceptron(pclass, nclass)
   %%% YOUR CODE GOES HERE %%%
   %% You should:
   %% 1. Compute the numbers of false positives and false negatives
-  out = tset * sepplane';
-
-  pos_vector = tset(:, 1) == 1;
-  mispos = sum(out(pos_vector, :) < 0);
-  % For negative class
-  neg_vector = tset(:, 1) == -1;
-  misneg = sum(out(neg_vector, :) < 0);
+  res = tset * sepplane';
+  mispos = rows(res(res(1:nPos,:) < 0));
+  misneg = rows(res(res(nPos+1:end,:) < 0));
 end

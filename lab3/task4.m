@@ -6,15 +6,26 @@
 % Alternative is of course to write separate functions for OVR ensemble.
 %
 
+[tvec tlab tstv tstl] = readSets();
+
+[mu trmx] = prepTransform(tvec, comp_count);
+tvec = pcaTransform(tvec, mu, trmx);
+tstv = pcaTransform(tstv, mu, trmx);
+
+% shift labels by one to use labels directly as indices
+tlab += 1;
+tstl += 1;
+
 % training of the whole ensemble
-ovr = trainOVRensemble(tvec, tlab, @perceptron);
+[ovr, err] = reduce_trainOVRensemble(tvec, tlab, @perceptron);
+err
 
 % check your ensemble on train set
-clab = unamvoting(tvec, ovr);
+clab = OVRclassifier(tvec, ovr);
 cfmx = confMx(tlab, clab)
 compErrors(cfmx)
 
 % repeat on test set
-clab = unamvoting(tstv, ovr);
+clab = OVRclassifier(tstv, ovr);
 cfmx = confMx(tstl, clab)
 compErrors(cfmx)

@@ -1,5 +1,15 @@
 repeat = 100;
 
+[tvec tlab tstv tstl] = readSets();
+
+[mu trmx] = prepTransform(tvec, comp_count);
+tvec = pcaTransform(tvec, mu, trmx);
+tstv = pcaTransform(tstv, mu, trmx)
+
+% shift labels by one to use labels directly as indices
+tlab += 1;
+tstl += 1;
+
 # Easy case
 pclass = tvec(tlab == 0, :);
 nclass = tvec(tlab == 1, :);

@@ -1,4 +1,4 @@
-function [errors, ovosp] = trainOVOensemble(tset, tlab, htrain)
+function [ovosp, errors] = trainOVOensemble(tset, tlab, htrain)
 % Trains a set of linear classifiers (one versus one class)
 % on the training set using trainSelect function
 % tset - training set samples

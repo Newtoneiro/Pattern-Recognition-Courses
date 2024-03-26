@@ -115,12 +115,11 @@ disp("Negative accuracy: "), disp(total_neg_acc / repeat)
 % operation can give you a confusion matrix. 
 
 % training of the whole ensemble
-ovo = trainOVOensemble(tvec, tlab, @perceptron);
+[ovo, err] = trainOVOensemble(tvec, tlab, @perceptron);
+err
 
 % check your ensemble on train set
 clab = unamvoting(tvec, ovo);
-tlab
-clab
 cfmx = confMx(tlab, clab)
 compErrors(cfmx)
 
