@@ -1,4 +1,4 @@
-function [ovrsp, errors] = reduce_trainOVRensemble(tset, tlab, htrain)
+function [ovrsp, errors] = reduce_trainOVRensemble(tset, tlab, htrain, reduce_val)
 % Trains a set of linear classifiers (one versus rest class)
 % on the training set using trainSelect function
 % tset - training set samples
@@ -19,7 +19,7 @@ function [ovrsp, errors] = reduce_trainOVRensemble(tset, tlab, htrain)
 	
 	  % select samples of two digits from the training set
     posSamples = tset(tlab == labels(i), :);
-    negSamples = reduce(tset, tlab, labels(i), 0.8);
+    negSamples = reduce(tset, tlab, labels(i), reduce_val);
 
 	  % train 5 classifiers and select the best one
     [sp misp misn] = trainSelect(posSamples, negSamples, 5, htrain);

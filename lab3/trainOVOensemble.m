@@ -16,8 +16,10 @@ function [ovosp, errors] = trainOVOensemble(tset, tlab, htrain)
   pairs = nchoosek(labels, 2);
   ovosp = zeros(rows(pairs), 2 + 1 + columns(tset));
   errors = zeros(rows(pairs),1);
-  
+
+  rows(pairs)
   for i=1:rows(pairs)
+    i
 	% store labels in the first two columns
     ovosp(i, 1:2) = pairs(i, :);
 	

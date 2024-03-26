@@ -4,11 +4,7 @@ repeat = 100;
 
 [mu trmx] = prepTransform(tvec, comp_count);
 tvec = pcaTransform(tvec, mu, trmx);
-tstv = pcaTransform(tstv, mu, trmx)
-
-% shift labels by one to use labels directly as indices
-tlab += 1;
-tstl += 1;
+tstv = pcaTransform(tstv, mu, trmx);
 
 # Easy case
 pclass = tvec(tlab == 0, :);

@@ -74,6 +74,12 @@ plot(x_vals, y_vals, 'k-', 'LineWidth', 2)
 
 repeat = 100;
 
+[tvec tlab tstv tstl] = readSets();
+
+[mu trmx] = prepTransform(tvec, comp_count);
+tvec = pcaTransform(tvec, mu, trmx);
+tstv = pcaTransform(tstv, mu, trmx);
+
 # Easy case
 pclass = tvec(tlab == 0, :);
 nclass = tvec(tlab == 1, :);
@@ -140,11 +146,98 @@ compErrors(cfmx)
 % Train and test the OVR ensemble
 
 % expand features
-% trainExp = expandFeatures(tvec);
-% testExp = expandFeatures(tstv);
+trainExp = expandFeatures(tvec);
+testExp = expandFeatures(tstv);
 
 % Train and test the OVO ensemble on the expanded features
 
+
+[tvec tlab tstv tstl] = readSets();
+
+[mu trmx] = prepTransform(tvec, comp_count);
+tvec = pcaTransform(tvec, mu, trmx);
+tstv = pcaTransform(tstv, mu, trmx);
+
+% Expand features
+tvec = expandFeatures(tvec);
+tstv = expandFeatures(tstv);
+
+% shift labels by one to use labels directly as indices
+tlab += 1;
+tstl += 1;
+
+% training of the whole ensemble
+[ovo, err] = trainOVOensemble(tvec, tlab, @perceptron);
+err
+
+% check your ensemble on train set
+clab = unamvoting(tvec, ovo);
+cfmx = confMx(tlab, clab)
+compErrors(cfmx)
+
+% repeat on test set
+clab = unamvoting(tstv, ovo);
+cfmx = confMx(tstl, clab)
+compErrors(cfmx)
+
 % Train and test the OVR ensemble on the expanded features
 
+
+[tvec tlab tstv tstl] = readSets();
+
+[mu trmx] = prepTransform(tvec, comp_count);
+tvec = pcaTransform(tvec, mu, trmx);
+tstv = pcaTransform(tstv, mu, trmx);
+
+% Expand features
+tvec = expandFeatures(tvec);
+tstv = expandFeatures(tstv);
+
+% shift labels by one to use labels directly as indices
+tlab += 1;
+tstl += 1;
+
+% training of the whole ensemble
+[ovo, err] = trainOVRensemble(tvec, tlab, @perceptron);
+err
+
+% check your ensemble on train set
+clab = unamvoting(tvec, ovo);
+cfmx = confMx(tlab, clab)
+compErrors(cfmx)
+
+% repeat on test set
+clab = unamvoting(tstv, ovo);
+cfmx = confMx(tstl, clab)
+compErrors(cfmx)
+
 % Think about improving your classifier further :)
+
+
+[tvec tlab tstv tstl] = readSets();
+
+[mu trmx] = prepTransform(tvec, comp_count);
+tvec = pcaTransform(tvec, mu, trmx);
+tstv = pcaTransform(tstv, mu, trmx);
+
+% Expand features
+tvec = expandFeatures(tvec);
+tstv = expandFeatures(tstv);
+
+% shift labels by one to use labels directly as indices
+tlab += 1;
+tstl += 1;
+
+% training of the whole ensemble
+[ovo, err] = reduce_trainOVRensemble(tvec, tlab, @perceptron, 0.8);
+err
+
+% check your ensemble on train set
+clab = OVRvoting(tvec, ovo);
+cfmx = confMx(tlab, clab)
+compErrors(cfmx)
+
+% repeat on test set
+clab = OVRvoting(tstv, ovo);
+cfmx = confMx(tstl, clab)
+compErrors(cfmx)

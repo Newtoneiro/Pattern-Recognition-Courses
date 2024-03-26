@@ -13,7 +13,9 @@ function [ovrsp, errors] = trainOVRensemble(tset, tlab, htrain)
   ovrsp = zeros(rows(labels), 2 + 1 + columns(tset));
   errors = zeros(rows(labels), 1);
   
+  rows(labels)
   for i=1:rows(labels)
+    i
 	% store label in the first column
     ovrsp(i, 1:2) = [labels(i) 0];
 	
