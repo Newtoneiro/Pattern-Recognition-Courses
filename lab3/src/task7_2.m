@@ -14,15 +14,15 @@ tlab += 1;
 tstl += 1;
 
 % training of the whole ensemble
-[ovo, err] = trainOVRensemble(tvec, tlab, @perceptron);
+[ovr, err] = trainOVRensemble(tvec, tlab, @perceptron);
 err
 
 % check your ensemble on train set
-clab = OVRvoting(tvec, ovo);
+clab = OVRvoting(tvec, ovr);
 cfmx = confMx(tlab, clab)
 compErrors(cfmx)
 
 % repeat on test set
-clab = OVRvoting(tstv, ovo);
+clab = OVRvoting(tstv, ovr);
 cfmx = confMx(tstl, clab)
 compErrors(cfmx)

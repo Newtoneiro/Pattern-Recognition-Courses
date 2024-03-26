@@ -5,7 +5,7 @@
 tvec = pcaTransform(tvec, mu, trmx);
 tstv = pcaTransform(tstv, mu, trmx);
 
-% Expand features
+% % Expand features
 tvec = expandFeatures(tvec);
 tstv = expandFeatures(tstv);
 
@@ -14,15 +14,15 @@ tlab += 1;
 tstl += 1;
 
 % training of the whole ensemble
-[ovo, err] = reduce_trainOVRensemble(tvec, tlab, @perceptron, 0.8);
+[ovr, err] = reduce_trainOVRensemble(tvec, tlab, @perceptron, 0.8);
 err
 
 % check your ensemble on train set
-clab = OVRvoting(tvec, ovo);
+clab = OVRvoting(tvec, ovr);
 cfmx = confMx(tlab, clab)
 compErrors(cfmx)
 
 % repeat on test set
-clab = OVRvoting(tstv, ovo);
+clab = OVRvoting(tstv, ovr);
 cfmx = confMx(tstl, clab)
 compErrors(cfmx)

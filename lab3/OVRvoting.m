@@ -18,7 +18,7 @@ function clab = OVRvoting(tset, clsmx)
 
     % find the most voted class
     [mv clab] = max(decisions, [], 2);
-    
+
     % if there is no unanimity, reject
     clab(mv~=1) = reject;
 end
